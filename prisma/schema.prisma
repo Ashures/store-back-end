@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id              String              @unique @default(uuid())
+  id              String              @id @unique @default(uuid())
   email           String              @unique
   name            String              @unique
   password        String
@@ -24,9 +24,9 @@ model User {
 }
 
 model UserStats {
-  userId          String              @unique
-  experience      BigInt
-  level           Int
+  userId          String              @id @unique
+  experience      Int                 @default(0)
+  level           Int                 @default(0)
   skill           Skill               @default(BEGINNER)
   user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
