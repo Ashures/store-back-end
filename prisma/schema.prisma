@@ -25,8 +25,8 @@ model User {
 
 model UserStats {
   userId          String              @id @unique
-  experience      Int                 @default(0)
   level           Int                 @default(1)
+  experience      Int                 @default(0)
   skill           Skill               @default(BEGINNER)
   user            User                @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
