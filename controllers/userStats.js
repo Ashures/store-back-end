@@ -43,7 +43,7 @@ const updateUserStat = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Content-Type. Expected application/json." });
 
     let userStats = await prisma.userStats.findUnique({ 
-      where: { name: String(req.params.id) }
+      where: { userId: String(req.params.id) }
     });
 
     if (!userStats) return res.status(404).json({ msg: `UserStats with id: '${req.params.id}' does not exist.` });
@@ -59,7 +59,7 @@ const updateUserStat = async (req, res) => {
     });
 
     return res.json({ 
-      msg: `UserStats ${req.params.name} successfully updated!`,
+      msg: `UserStats with id: '${req.params.id}' successfully updated!`,
       data: userStats
     });
   });
