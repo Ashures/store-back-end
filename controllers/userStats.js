@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const getUserStats = async (req, res) => {
   await handleApi(res, async () => {
-    const userStatss = await prisma.userStats.findMany({ 
+    const userStats = await prisma.userStats.findMany({ 
       select: { 
         "experience": true,
         "level": true,
@@ -13,16 +13,16 @@ const getUserStats = async (req, res) => {
       }
     });
 
-    if (userStatss.length === 0) return res.status(404).json({ msg: "No userStatss found." });
+    if (userStats.length === 0) return res.status(404).json({ msg: "No userStats found." });
 
-    return res.json({ data: userStatss });
+    return res.json({ data: userStats });
   });
 };
 
 const getUserStat = async (req, res) => {
   await handleApi(res, async () => {
     const userStats = await prisma.userStats.findUnique({ 
-      where: { name: String( req.params.name ) },
+      where: { userId: String( req.params.id ) },
       select: { 
         "experience": true,
         "level": true,
@@ -30,7 +30,7 @@ const getUserStat = async (req, res) => {
       }
     });
 
-    if (!userStats) return res.status(404).json({ msg: `UserStats '${req.params.name}' does not exist.` });
+    if (!userStats) return res.status(404).json({ msg: `UserStats with id: '${req.params.id}' does not exist.` });
 
     return res.json({ data: userStats });
   });
@@ -43,13 +43,13 @@ const updateUserStat = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Content-Type. Expected application/json." });
 
     let userStats = await prisma.userStats.findUnique({ 
-      where: { name: String(req.params.name) }
+      where: { name: String(req.params.id) }
     });
 
-    if (!userStats) return res.status(404).json({ msg: `UserStats '${req.params.name}' does not exist.` });
+    if (!userStats) return res.status(404).json({ msg: `UserStats with id: '${req.params.id}' does not exist.` });
 
     userStats = await prisma.userStats.update({
-      where: { name: String(req.params.name) },
+      where: { userId: String(req.params.id) },
       data: { ...req.body },
       select: { 
         "experience": true,
